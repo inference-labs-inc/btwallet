@@ -208,5 +208,3 @@ replicate.yaml
 **/run.sh
 
 tests/zombienet/bin/**/*
-
-Cargo.lock
