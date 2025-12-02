@@ -63,11 +63,11 @@ impl fmt::Debug for Wallet {
 impl Wallet {
     /// Initialize the bittensor wallet object containing a hot and coldkey.
     ///
-    /// # Arguments
-    /// * `name` - The name of the wallet. Defaults to "default"
-    /// * `hotkey` - The name of hotkey. Defaults to "default"
-    /// * `path` - The path to wallets. Defaults to "~/.bittensor/wallets/"
-    /// * `config` - Optional configuration
+    ///     Arguments:
+    ///         `name` - The name of the wallet. Defaults to "default"
+    ///         `hotkey` - The name of hotkey. Defaults to "default"
+    ///         `path` - The path to wallets. Defaults to "~/.bittensor/wallets/"
+    ///         `config` - Optional configuration
     pub fn new(
         name: Option<String>,
         hotkey: Option<String>,
@@ -174,18 +174,17 @@ impl Wallet {
 
     /// Checks for existing coldkeypub and hotkeys, and creates them if non-existent.
     ///
-    /// # Arguments
-    /// * `coldkey_use_password` - Whether to use a password for coldkey. Defaults to true.
-    /// * `hotkey_use_password` - Whether to use a password for hotkey. Defaults to false.
-    /// * `save_coldkey_to_env` - Whether to save coldkey password to local env. Defaults to false.
-    /// * `save_hotkey_to_env` - Whether to save hotkey password to local env. Defaults to false.
-    /// * `coldkey_password` - Optional password for coldkey encryption. If provided, forces password use.
-    /// * `hotkey_password` - Optional password for hotkey encryption. If provided, forces password use.
-    /// * `overwrite` - Whether to overwrite existing keys. Defaults to false.
-    /// * `suppress` - Whether to suppress mnemonic display. Defaults to false.
-    ///
-    /// # Returns
-    /// * `Result<Self, WalletError>` - Wallet instance with created keys or error
+    ///     Arguments:
+    ///         `coldkey_use_password` - Whether to use a password for coldkey. Defaults to true.
+    ///         `hotkey_use_password` - Whether to use a password for hotkey. Defaults to false.
+    ///         `save_coldkey_to_env` - Whether to save coldkey password to local env. Defaults to false.
+    ///         `save_hotkey_to_env` - Whether to save hotkey password to local env. Defaults to false.
+    ///         `coldkey_password` - Optional password for coldkey encryption. If provided, forces password use.
+    ///         `hotkey_password` - Optional password for hotkey encryption. If provided, forces password use.
+    ///         `overwrite` - Whether to overwrite existing keys. Defaults to false.
+    ///         `suppress` - Whether to suppress mnemonic display. Defaults to false.
+    ///     Returns
+    ///         `Result<Self, WalletError>` - Wallet instance with created keys or error
     #[allow(clippy::bool_comparison)]
     pub fn create(
         &mut self,
@@ -235,18 +234,17 @@ impl Wallet {
 
     /// Checks for existing coldkeypub and hotkeys, and recreates them if non-existent.
     ///
-    /// # Arguments
-    /// * `coldkey_use_password` - Whether to use a password for coldkey. Defaults to true.
-    /// * `hotkey_use_password` - Whether to use a password for hotkey. Defaults to false.
-    /// * `save_coldkey_to_env` - Whether to save a coldkey password to local env. Defaults to false.
-    /// * `save_hotkey_to_env` - Whether to save a hotkey password to local env. Defaults to false.
-    /// * `coldkey_password` - Optional coldkey password for encryption. If provided, forces password use.
-    /// * `hotkey_password` - Optional hotkey password for encryption. If provided, forces password use.
-    /// * `overwrite` - Whether to overwrite existing keys. Defaults to false.
-    /// * `suppress` - Whether to suppress mnemonic display. Defaults to false.
-    ///
-    /// # Returns
-    /// * `Result<Self, WalletError>` - Wallet instance with created keys or error
+    ///     Arguments
+    ///         `coldkey_use_password` - Whether to use a password for coldkey. Defaults to true.
+    ///         `hotkey_use_password` - Whether to use a password for hotkey. Defaults to false.
+    ///         `save_coldkey_to_env` - Whether to save a coldkey password to local env. Defaults to false.
+    ///         `save_hotkey_to_env` - Whether to save a hotkey password to local env. Defaults to false.
+    ///         `coldkey_password` - Optional coldkey password for encryption. If provided, forces password use.
+    ///         `hotkey_password` - Optional hotkey password for encryption. If provided, forces password use.
+    ///         `overwrite` - Whether to overwrite existing keys. Defaults to false.
+    ///         `suppress` - Whether to suppress mnemonic display. Defaults to false.
+    ///     Returns
+    ///         `Result<Self, WalletError>` - Wallet instance with created keys or error
     pub fn recreate(
         &mut self,
         coldkey_use_password: bool,
@@ -395,15 +393,14 @@ impl Wallet {
 
     /// Sets the coldkey for the wallet.
     ///
-    /// # Arguments
-    /// * `keypair` - The keypair to set as coldkey
-    /// * `encrypt` - Whether to encrypt the key. Defaults to true
-    /// * `overwrite` - Whether to overwrite if key exists. Defaults to false
-    /// * `save_coldkey_to_env` - Whether to save password to env. Defaults to false
-    /// * `coldkey_password` - Optional password for encryption
-    ///
-    /// # Returns
-    /// * `Result<(), KeyFileError>` - Success or error
+    ///     Arguments
+    ///         `keypair` - The keypair to set as coldkey
+    ///         `encrypt` - Whether to encrypt the key. Defaults to true
+    ///         `overwrite` - Whether to overwrite if key exists. Defaults to false
+    ///         `save_coldkey_to_env` - Whether to save password to env. Defaults to false
+    ///         `coldkey_password` - Optional password for encryption
+    ///     Returns
+    ///         `Result<(), KeyFileError>` - Success or error
     pub fn set_coldkey(
         &mut self,
         keypair: Keypair,

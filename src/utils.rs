@@ -16,11 +16,10 @@ pub fn get_ss58_format(ss58_address: &str) -> Result<u16, &'static str> {
 
 /// Checks if the given address is a valid ss58 address.
 ///
-/// Args:
-///     address(str): The address to check.
-///
-/// Returns:
-///     True if the address is a valid ss58 address for Bittensor, False otherwise.
+///     Arguments:
+///         address(str): The address to check.
+///     Returns:
+///         True if the address is a valid ss58 address for Bittensor, False otherwise.
 #[pyfunction]
 pub fn is_valid_ss58_address(address: &str) -> bool {
     if address.is_empty() {
@@ -34,9 +33,8 @@ pub fn is_valid_ss58_address(address: &str) -> bool {
 
 ///    Checks if the given public_key is a valid ed25519 key.
 ///
-///     Args:
+///     Arguments:
 ///         public_key: The public_key to check as string.
-///
 ///     Returns:
 ///         True if the public_key is a valid ed25519 key, False otherwise.
 pub fn is_string_valid_ed25519_pubkey(public_key: &str) -> bool {
@@ -55,9 +53,8 @@ pub fn is_string_valid_ed25519_pubkey(public_key: &str) -> bool {
 
 ///    Checks if the given public_key is a valid ed25519 key.
 ///
-///     Args:
+///     Arguments:
 ///         public_key: The public_key to check as bytes.
-///
 ///     Returns:
 ///         True if the public_key is a valid ed25519 key, False otherwise.
 pub fn are_bytes_valid_ed25519_pubkey(public_key: &[u8]) -> bool {
@@ -76,9 +73,8 @@ pub fn are_bytes_valid_ed25519_pubkey(public_key: &[u8]) -> bool {
 
 ///    Checks if the given address is a valid destination address.
 ///
-///     Args:
+///     Arguments:
 ///         address(Union[str, bytes]): The address to check.
-///
 ///     Returns:
 ///         True if the address is a valid destination address, False otherwise.
 #[pyfunction]
@@ -122,11 +118,10 @@ sys.stdout.flush()
 
 /// Prompts the user and returns the response, if any.
 ///    
-/// Args:
-///     prompt: String
-///
-/// Returns:
-///     response: Option<String>
+///     Arguments:
+///         prompt: String
+///     Returns:
+///         response: Option<String>
 pub fn prompt(prompt: String) -> Option<String> {
     use std::io::{self, Write};
 
@@ -142,11 +137,10 @@ pub fn prompt(prompt: String) -> Option<String> {
 
 /// Prompts the user with a password entry and returns the response, if any.
 ///    
-/// Args:
-///     prompt (String): the prompt to ask the user with.
-///
-/// Returns:
-///     response: Option<String>
+///     Arguments:
+///         prompt (String): the prompt to ask the user with.
+///     Returns:
+///         response: Option<String>
 pub fn prompt_password(prompt: String) -> Option<String> {
     use rpassword::read_password;
     use std::io::{self, Write};

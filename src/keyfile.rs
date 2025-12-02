@@ -27,7 +27,7 @@ const LEGACY_SALT: &[u8] = b"Iguesscyborgslikemyselfhaveatendencytobeparanoidabo
 
 /// Serializes keypair object into keyfile data.
 ///
-///     Args:
+///     Arguments:
 ///         keypair (Keypair): The keypair object to be serialized.
 ///     Returns:
 ///         data (bytes): Serialized keypair data.
@@ -71,7 +71,7 @@ pub fn serialized_keypair_to_keyfile_data(keypair: &Keypair) -> Result<Vec<u8>, 
 
 /// Deserializes Keypair object from passed keyfile data.
 ///
-///     Args:
+///     Arguments:
 ///         keyfile_data (PyBytes): The keyfile data to be loaded.
 ///     Returns:
 ///         keypair (Keypair): The Keypair loaded from bytes.
@@ -119,7 +119,7 @@ pub fn deserialize_keypair_from_keyfile_data(keyfile_data: &[u8]) -> Result<Keyp
 
 /// Validates the password against a password policy.
 ///
-///     Args:
+///     Arguments:
 ///         password (str): The password to verify.
 ///     Returns:
 ///         valid (bool): ``True`` if the password meets validity requirements.
@@ -185,13 +185,10 @@ pub fn ask_password(validation_required: bool) -> Result<String, KeyFileError> {
 
 /// Returns `true` if the keyfile data is NaCl encrypted.
 ///
-/// # Arguments
-///
-/// * `keyfile_data` - Bytes to validate
-///
-/// # Returns
-///
-/// * `is_nacl` - `true` if the data is ansible encrypted.
+///     Arguments:
+///         `keyfile_data` - Bytes to validate
+///     Returns:
+///         `is_nacl` - `true` if the data is ansible encrypted.
 #[pyfunction]
 pub fn keyfile_data_is_encrypted_nacl(keyfile_data: &[u8]) -> bool {
     keyfile_data.starts_with(b"$NACL")
@@ -199,11 +196,10 @@ pub fn keyfile_data_is_encrypted_nacl(keyfile_data: &[u8]) -> bool {
 
 /// Returns true if the keyfile data is ansible encrypted.
 ///
-/// # Args
-/// * `keyfile_data` - The bytes to validate.
-///
-/// # Returns
-/// * `is_ansible` - True if the data is ansible encrypted.
+///     Arguments:
+///         `keyfile_data` - The bytes to validate.
+///     Returns:
+///         `is_ansible` - True if the data is ansible encrypted.
 #[pyfunction]
 pub fn keyfile_data_is_encrypted_ansible(keyfile_data: &[u8]) -> bool {
     keyfile_data.starts_with(b"$ANSIBLE_VAULT")
@@ -211,11 +207,10 @@ pub fn keyfile_data_is_encrypted_ansible(keyfile_data: &[u8]) -> bool {
 
 /// Returns true if the keyfile data is legacy encrypted.
 ///
-/// # Args
-/// * `keyfile_data` - The bytes to validate.
-///
-/// # Returns
-/// * `is_legacy` - `true` if the data is legacy encrypted.
+///     Arguments:
+///         `keyfile_data` - The bytes to validate.
+///     Returns:
+///         `is_legacy` - `true` if the data is legacy encrypted.
 #[pyfunction]
 pub fn keyfile_data_is_encrypted_legacy(keyfile_data: &[u8]) -> bool {
     keyfile_data.starts_with(b"gAAAAA")
@@ -223,9 +218,8 @@ pub fn keyfile_data_is_encrypted_legacy(keyfile_data: &[u8]) -> bool {
 
 /// Returns `true` if the keyfile data is encrypted.
 ///
-///     Args:
+///     Arguments:
 ///         keyfile_data (bytes): The bytes to validate.
-///
 ///     Returns:
 ///         is_encrypted (bool): `true` if the data is encrypted.
 #[pyfunction]
@@ -240,7 +234,6 @@ pub fn keyfile_data_is_encrypted(keyfile_data: &[u8]) -> bool {
 ///
 ///     Arguments:
 ///         keyfile_data (bytes): Bytes to validate.
-///
 ///     Returns:
 ///         (str): A string representing the name of encryption method.
 #[pyfunction]
@@ -262,7 +255,6 @@ pub fn keyfile_data_encryption_method(keyfile_data: &[u8]) -> String {
 ///     Arguments:
 ///         keyfile_data (bytes): Bytes of data from the keyfile.
 ///         password (str): Optional string that represents the password.
-///
 ///     Returns:
 ///         encrypted_data (bytes): The encrypted keyfile data in bytes.
 pub fn legacy_encrypt_keyfile_data(
@@ -286,11 +278,10 @@ pub fn legacy_encrypt_keyfile_data(
 
 /// Retrieves the cold key password from the environment variables.
 ///
-/// # Args
-/// * `coldkey_name` - The name of the cold key.
-///
-/// # Returns
-/// * `Option<String>` - The password retrieved from the environment variables, or `None` if not found.
+///     Arguments:
+///         `coldkey_name` - The name of the cold key.
+///     Returns:
+///         `Option<String>` - The password retrieved from the environment variables, or `None` if not found.
 pub fn get_password_from_environment(env_var_name: String) -> Result<Option<String>, KeyFileError> {
     match env::var(&env_var_name) {
         Ok(encrypted_password_base64) => {
@@ -304,7 +295,7 @@ pub fn get_password_from_environment(env_var_name: String) -> Result<Option<Stri
     }
 }
 
-// decrypt of keyfile_data with secretbox
+/// decrypt of keyfile_data with secretbox
 fn derive_key(password: &[u8]) -> secretbox::Key {
     let nacl_salt = pwhash::argon2i13::Salt::from_slice(NACL_SALT).expect("Invalid NACL_SALT.");
     let mut key = secretbox::Key([0; secretbox::KEYBYTES]);
@@ -321,10 +312,9 @@ fn derive_key(password: &[u8]) -> secretbox::Key {
 
 /// Encrypts the passed keyfile data using ansible vault.
 ///
-///     Args:
+///     Arguments:
 ///         keyfile_data (bytes): The bytes to encrypt.
 ///         password (str): The password used to encrypt the data. If `None`, asks for user input.
-///
 ///     Returns:
 ///         encrypted_data (bytes): The encrypted data.
 pub fn encrypt_keyfile_data(
@@ -356,11 +346,10 @@ pub fn encrypt_keyfile_data(
 
 /// Decrypts the passed keyfile data using ansible vault.
 ///
-///     Args:
+///     Arguments:
 ///         keyfile_data (): The bytes to decrypt.
 ///         password (str): The password used to decrypt the data. If `None`, asks for user input.
 ///         coldkey_name (str): The name of the cold key. If provided, retrieves the password from environment variables.
-///
 ///     Returns:
 ///         decrypted_data (bytes): The decrypted data.
 pub fn decrypt_keyfile_data(
@@ -619,8 +608,8 @@ impl Keyfile {
 
     /// Returns ``True`` if the file exists on the device.
     ///
-    /// Returns:
-    ///     readable (bool): ``True`` if the file is readable.
+    ///     Returns:
+    ///         readable (bool): ``True`` if the file is readable.
     pub fn exists_on_device(&self) -> Result<bool, KeyFileError> {
         Ok(self._path.exists())
     }
@@ -646,8 +635,8 @@ impl Keyfile {
 
     /// Returns ``True`` if the file under path is writable.
     ///
-    /// Returns:
-    ///     writable (bool): ``True`` if the file is writable.
+    ///     Returns:
+    ///         writable (bool): ``True`` if the file is writable.
     pub fn is_writable(&self) -> Result<bool, KeyFileError> {
         // check if file exist
         if !self.exists_on_device()? {
@@ -907,11 +896,10 @@ impl Keyfile {
 
     /// Reads the keyfile data from the file.
     ///
-    /// Returns:
-    ///     keyfile_data (Vec<u8>): The keyfile data stored under the path.
-    ///
-    /// Raises:
-    ///     KeyFileError: Raised if the file does not exist or is not readable.
+    ///     Returns:
+    ///         keyfile_data (Vec<u8>): The keyfile data stored under the path.
+    ///     Raises:
+    ///         KeyFileError: Raised if the file does not exist or is not readable.
     pub fn _read_keyfile_data_from_file(&self) -> Result<Vec<u8>, KeyFileError> {
         // Check if the file exists
         if !self.exists_on_device()? {
@@ -941,9 +929,9 @@ impl Keyfile {
 
     /// Writes the keyfile data to the file.
     ///
-    /// Arguments:
-    ///     keyfile_data: The byte data to store under the path.
-    ///     overwrite: If true, overwrites the data without asking for permission from the user. Default is false.
+    ///     Arguments:
+    ///         keyfile_data: The byte data to store under the path.
+    ///         overwrite: If true, overwrites the data without asking for permission from the user. Default is false.
     pub fn _write_keyfile_data_to_file(
         &self,
         keyfile_data: &[u8],
