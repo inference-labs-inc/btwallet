@@ -7,6 +7,11 @@ use crate::keypair::Keypair;
 pub(crate) const SS58_FORMAT: u8 = 42;
 
 /// Returns the SS58 format of the given address string.
+///
+///     Arguments:
+///         ss58_address (str): The SS58 address to extract the format from.
+///     Returns:
+///         format (u16): The SS58 format number.
 pub fn get_ss58_format(ss58_address: &str) -> Result<u16, &'static str> {
     match <AccountId32 as Ss58Codec>::from_ss58check_with_version(ss58_address) {
         Ok((_, format)) => Ok(u16::from(format)),
@@ -17,9 +22,9 @@ pub fn get_ss58_format(ss58_address: &str) -> Result<u16, &'static str> {
 /// Checks if the given address is a valid ss58 address.
 ///
 ///     Arguments:
-///         address(str): The address to check.
+///         address (str): The address to check.
 ///     Returns:
-///         True if the address is a valid ss58 address for Bittensor, False otherwise.
+///         ``True`` if the address is a valid ss58 address for Bittensor, ``False`` otherwise.
 #[pyfunction]
 pub fn is_valid_ss58_address(address: &str) -> bool {
     if address.is_empty() {
@@ -34,9 +39,9 @@ pub fn is_valid_ss58_address(address: &str) -> bool {
 ///    Checks if the given public_key is a valid ed25519 key.
 ///
 ///     Arguments:
-///         public_key: The public_key to check as string.
+///         public_key (str): The public_key to check as string.
 ///     Returns:
-///         True if the public_key is a valid ed25519 key, False otherwise.
+///         valid (bool): ``True`` if the public_key is a valid ed25519 key, ``False`` otherwise.
 pub fn is_string_valid_ed25519_pubkey(public_key: &str) -> bool {
     if public_key.len() != 64 && public_key.len() != 66 {
         return false;
@@ -54,9 +59,9 @@ pub fn is_string_valid_ed25519_pubkey(public_key: &str) -> bool {
 ///    Checks if the given public_key is a valid ed25519 key.
 ///
 ///     Arguments:
-///         public_key: The public_key to check as bytes.
+///         public_key (bytes): The public_key to check as bytes.
 ///     Returns:
-///         True if the public_key is a valid ed25519 key, False otherwise.
+///         valid (bool): ``True`` if the public_key is a valid ed25519 key, ``False`` otherwise.
 pub fn are_bytes_valid_ed25519_pubkey(public_key: &[u8]) -> bool {
     if public_key.len() != 32 {
         return false;
@@ -74,9 +79,9 @@ pub fn are_bytes_valid_ed25519_pubkey(public_key: &[u8]) -> bool {
 ///    Checks if the given address is a valid destination address.
 ///
 ///     Arguments:
-///         address(Union[str, bytes]): The address to check.
+///         address (str): The address to check.
 ///     Returns:
-///         True if the address is a valid destination address, False otherwise.
+///         valid (bool): ``True`` if the address is a valid destination address, ``False`` otherwise.
 #[pyfunction]
 pub fn is_valid_bittensor_address_or_public_key(address: &str) -> bool {
     if address.starts_with("0x") {
