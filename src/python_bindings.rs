@@ -631,6 +631,12 @@ fn py_get_ss58_format(ss58_address: &str) -> PyResult<u16> {
     crate::utils::get_ss58_format(ss58_address).map_err(|e| PyErr::new::<PyValueError, _>(e))
 }
 
+///    Checks if the given public_key is a valid ed25519 key.
+///
+///     Arguments:
+///         public_key (bytes): The public_key to check as bytes.
+///     Returns:
+///         valid (bool): ``True`` if the public_key is a valid ed25519 key, ``False`` otherwise.
 #[pyfunction(name = "is_valid_ed25519_pubkey")]
 fn py_is_valid_ed25519_pubkey(public_key: &Bound<'_, PyAny>) -> PyResult<bool> {
     Python::attach(|_py| {
@@ -895,6 +901,7 @@ except argparse.ArgumentError:
     }
 
     /// Checks for existing coldkeypub and hotkeys, and creates them if non-existent.
+    ///
     ///     Arguments:
     ///         coldkey_use_password (bool): Whether to use a password for coldkey. Defaults to ``True``.
     ///         hotkey_use_password (bool): Whether to use a password for hotkey. Defaults to ``False``.
@@ -907,7 +914,9 @@ except argparse.ArgumentError:
     ///
     ///     Returns:
     ///         Wallet instance with created keys.
-
+    ///
+    ///     Raises:
+    ///         WalletError: If key generation or file operations fail.
     #[pyo3(signature = (coldkey_use_password=true, hotkey_use_password=false, save_coldkey_to_env=false, save_hotkey_to_env=false, coldkey_password=None, hotkey_password=None, overwrite=false, suppress=false))]
     pub fn create(
         &mut self,
