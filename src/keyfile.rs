@@ -163,25 +163,25 @@ pub fn ask_password(validation_required: bool) -> Result<String, KeyFileError> {
 }
 
 /// Returns `true` if the keyfile data is NaCl encrypted.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn keyfile_data_is_encrypted_nacl(keyfile_data: &[u8]) -> bool {
     keyfile_data.starts_with(b"$NACL")
 }
 
 /// Returns true if the keyfile data is ansible encrypted.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn keyfile_data_is_encrypted_ansible(keyfile_data: &[u8]) -> bool {
     keyfile_data.starts_with(b"$ANSIBLE_VAULT")
 }
 
 /// Returns true if the keyfile data is legacy encrypted.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn keyfile_data_is_encrypted_legacy(keyfile_data: &[u8]) -> bool {
     keyfile_data.starts_with(b"gAAAAA")
 }
 
 /// Returns `true` if the keyfile data is encrypted.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn keyfile_data_is_encrypted(keyfile_data: &[u8]) -> bool {
     let nacl = keyfile_data_is_encrypted_nacl(keyfile_data);
     let ansible = keyfile_data_is_encrypted_ansible(keyfile_data);
@@ -190,7 +190,7 @@ pub fn keyfile_data_is_encrypted(keyfile_data: &[u8]) -> bool {
 }
 
 /// Returns type of encryption method as a string.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn keyfile_data_encryption_method(keyfile_data: &[u8]) -> String {
     if keyfile_data_is_encrypted_nacl(keyfile_data) {
         "NaCl"

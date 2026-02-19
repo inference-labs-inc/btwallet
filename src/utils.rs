@@ -20,7 +20,7 @@ pub fn get_ss58_format(ss58_address: &str) -> Result<u16, &'static str> {
 ///
 /// Returns:
 ///     True if the address is a valid ss58 address for Bittensor, False otherwise.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn is_valid_ss58_address(address: &str) -> bool {
     if address.is_empty() {
         // Possibly there could be a debug log, but not a print
@@ -80,7 +80,7 @@ pub fn are_bytes_valid_ed25519_pubkey(public_key: &[u8]) -> bool {
 ///
 ///     Returns:
 ///         True if the address is a valid destination address, False otherwise.
-#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn is_valid_bittensor_address_or_public_key(address: &str) -> bool {
     if address.starts_with("0x") {
         // Convert hex string to bytes
@@ -94,23 +94,22 @@ pub fn is_valid_bittensor_address_or_public_key(address: &str) -> bool {
     }
 }
 
-#[cfg(not(feature = "pyo3"))]
+#[cfg(not(feature = "python-bindings"))]
 pub fn print(s: String) {
     use std::io::{self, Write};
     print!("{}", s);
     io::stdout().flush().unwrap();
 }
 
-#[cfg(feature = "pyo3")]
+#[cfg(feature = "python-bindings")]
 pub fn print(s: String) {
     use pyo3::prelude::*;
     use pyo3::types::{PyDict, PyDictMethods};
-    use std::ffi::CString;
-    Python::attach(|py| {
+    let _ = Python::attach(|py| -> PyResult<()> {
         let locals = PyDict::new(py);
-        locals.set_item("s", s).unwrap();
-        let code = CString::new("import sys\nprint(s, end='')\nsys.stdout.flush()").unwrap();
-        py.run(&code, None, Some(&locals)).unwrap();
+        locals.set_item("s", s)?;
+        py.run(pyo3::ffi::c_str!("import sys\nprint(s, end='')\nsys.stdout.flush()"), None, Some(&locals))?;
+        Ok(())
     });
 }
 

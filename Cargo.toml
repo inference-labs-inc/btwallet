@@ -37,6 +37,6 @@ optional = true
 features = ["vendored"]
 
 [features]
-extension-module = ["pyo3", "pyo3/extension-module"]
+python-bindings = ["dep:pyo3", "pyo3/extension-module"]
 vendored-openssl = ["openssl-sys/vendored"]
-default = ["extension-module"]
+default = ["python-bindings"]
