@@ -1,5 +1,4 @@
 use colored::Colorize;
-use pyo3::pyfunction;
 use std::path::PathBuf;
 use std::{env, fmt};
 
@@ -11,7 +10,7 @@ use crate::keypair::Keypair;
 use crate::utils::{self, is_valid_bittensor_address_or_public_key};
 
 /// Display the mnemonic and a warning message to keep the mnemonic safe.
-#[pyfunction]
+#[cfg_attr(feature = "pyo3", pyo3::pyfunction)]
 pub fn display_mnemonic_msg(mnemonic: String, key_type: &str) {
     utils::print(format!("{}", "\nIMPORTANT: Store this mnemonic in a secure (preferable offline place), as anyone who has possession of this mnemonic can use it to regenerate the key and access your tokens.\n".red()));
 
