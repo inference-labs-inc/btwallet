@@ -3,6 +3,7 @@ mod constants;
 mod errors;
 mod keyfile;
 mod keypair;
+#[cfg(feature = "python-bindings")]
 mod python_bindings;
 mod utils;
 mod wallet;

@@ -1,4 +1,3 @@
-use pyo3::pyfunction;
 use sp_core::crypto::{AccountId32, Ss58Codec};
 use std::str;
 
@@ -21,7 +20,7 @@ pub fn get_ss58_format(ss58_address: &str) -> Result<u16, &'static str> {
 ///
 /// Returns:
 ///     True if the address is a valid ss58 address for Bittensor, False otherwise.
-#[pyfunction]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn is_valid_ss58_address(address: &str) -> bool {
     if address.is_empty() {
         // Possibly there could be a debug log, but not a print
@@ -81,7 +80,7 @@ pub fn are_bytes_valid_ed25519_pubkey(public_key: &[u8]) -> bool {
 ///
 ///     Returns:
 ///         True if the address is a valid destination address, False otherwise.
-#[pyfunction]
+#[cfg_attr(feature = "python-bindings", pyo3::pyfunction)]
 pub fn is_valid_bittensor_address_or_public_key(address: &str) -> bool {
     if address.starts_with("0x") {
         // Convert hex string to bytes
@@ -104,20 +103,18 @@ pub fn print(s: String) {
 
 #[cfg(feature = "python-bindings")]
 pub fn print(s: String) {
-    pyo3::Python::with_gil(|py| {
-        let locals = PyDict::new_bound(py);
-        locals.set_item("s", s).unwrap();
-        py.run_bound(
-            r#"
-import sys
-print(s, end='')
-sys.stdout.flush()
-"#,
-            None,
-            Some(&locals),
-        )
-        .unwrap();
+    use pyo3::prelude::*;
+    let result = Python::attach(|py| -> PyResult<()> {
+        let stdout = py.import("sys")?.getattr("stdout")?;
+        stdout.call_method1("write", (s,))?;
+        stdout.call_method0("flush")?;
+        Ok(())
     });
+    if cfg!(debug_assertions) {
+        if let Err(e) = result {
+            eprintln!("Python print failed: {e}");
+        }
+    }
 }
 
 /// Prompts the user and returns the response, if any.

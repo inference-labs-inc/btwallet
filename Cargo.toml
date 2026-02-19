@@ -10,7 +10,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 sp-core = "34.0.0"
-pyo3 = { version = "0.26.0", features = ["generate-import-lib"] }
+pyo3 = { version = "0.26.0", features = ["generate-import-lib"], optional = true }
 bip39 = { version = "2.0.0", features = ["rand"] }
 hex = "0.4.3"
 colored = "2.1.0"
@@ -37,7 +37,6 @@ optional = true
 features = ["vendored"]
 
 [features]
-extension-module = ["pyo3/extension-module"]
+python-bindings = ["dep:pyo3", "pyo3/extension-module"]
 vendored-openssl = ["openssl-sys/vendored"]
-default = ["extension-module"]
-python-bindings = []
+default = ["python-bindings"]
