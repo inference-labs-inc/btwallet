@@ -104,13 +104,17 @@ pub fn print(s: String) {
 #[cfg(feature = "python-bindings")]
 pub fn print(s: String) {
     use pyo3::prelude::*;
-    use pyo3::types::{PyDict, PyDictMethods};
-    let _ = Python::attach(|py| -> PyResult<()> {
-        let locals = PyDict::new(py);
-        locals.set_item("s", s)?;
-        py.run(pyo3::ffi::c_str!("import sys\nprint(s, end='')\nsys.stdout.flush()"), None, Some(&locals))?;
+    let result = Python::attach(|py| -> PyResult<()> {
+        let stdout = py.import("sys")?.getattr("stdout")?;
+        stdout.call_method1("write", (s,))?;
+        stdout.call_method0("flush")?;
         Ok(())
     });
+    if cfg!(debug_assertions) {
+        if let Err(e) = result {
+            eprintln!("Python print failed: {e}");
+        }
+    }
 }
 
 /// Prompts the user and returns the response, if any.
